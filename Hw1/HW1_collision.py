@@ -22,6 +22,22 @@ def tuckarms(env,robot):
         robot.GetController().SetDesired(robot.GetDOFValues());
     waitrobot(robot)
 
+
+
+
+def touch_wall (env,robot):
+    '''
+    Move the arm of the PR2 to touch the puma
+    '''
+    with env:
+        jointnames = ['l_shoulder_lift_joint','l_elbow_flex_joint','l_wrist_flex_joint']
+        robot.SetActiveDOFs([robot.GetJoint(name).GetDOFIndex() for name in jointnames])
+        robot.SetActiveDOFValues([-0.015,-1.0,0.7]);
+        robot.GetController().SetDesired(robot.GetDOFValues());
+    waitrobot(robot)
+
+
+
 if __name__ == "__main__":
 
     env = Environment()
@@ -46,6 +62,15 @@ if __name__ == "__main__":
     location[0][3] = 0.16804
     location[1][3] = 0.1997
     robot.SetTransform(location)
+
+
+    print "Collision status of PR2 robot : ", env.CheckCollision(robot)
+    print "Self Collision status of PR2 robot: " ,robot.CheckSelfCollision()
+
+    touch_wall(env,robot)
+
+    print "Collision status of PR2 robot : ", env.CheckCollision(robot)
+    print "Self Collision status of PR2 robot: " ,robot.CheckSelfCollision()
 
 
 
