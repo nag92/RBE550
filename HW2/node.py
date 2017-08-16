@@ -14,3 +14,6 @@ class Node(object):
         self._generation = 0
 
         self._distance = 0
+
+    def __cmp__(self, other):
+        return cmp(self._cost, other.priority)
