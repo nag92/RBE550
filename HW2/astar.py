@@ -39,12 +39,31 @@ class AStar(object):
     def get_neighbours(self, loc):
         locations = []
         print loc
-        for x in [-self._step, 0, self._step]:
-            for y in [-self._step, 0, self._step]:
-                for z in [-self._angle_step, 0, self._angle_step]:
-                    if not ( x == 0 and y == 0 and z ==0 ):
-                        temp = loc + np.array([x,y,z])
-                        print temp
-                        locations.append( temp )
+
+        if self._connected == 4:
+
+            for i in xrange(6):
+                locations = []
+                dir = 1
+                if i%2 == 0: dir = -1
+
+                step = dir*self._step
+                angle_inc = dir*self._angle_step
+
+                if i == 0 or i == 1 :
+                    locations.append(loc + np.array([step, 0, 0]))
+                elif i == 2 or i == 3 :
+                    locations.append(loc + np.array([0, step, 0]))
+                elif( i == 4 or i == 5):
+                    locations.append(loc + np.array([0 , 0, angle_inc]))
+
+        else:
+
+            for x in [-self._step, 0, self._step]:
+                for y in [-self._step, 0, self._step]:
+                    for z in [-self._angle_step, 0, self._angle_step]:
+                        if not ( x == 0 and y == 0 and z == 0 ):
+                            locations.append( loc + np.array([x,y,z]) )
+
 
         return locations
