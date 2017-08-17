@@ -14,13 +14,13 @@ class AStar(object):
         self._robot = robot
 
         # which cells to check
-        self._connected = connected
+        self._connected = 4#connected
 
         # how to calculate heuristics
         if (heuristic is 'eucledian' or heuristic is 'manhattan'):
             self._heuristic = 'eucledian'
         else:
-            self._heuristic = heuristic
+            self._heuristic = 'heuristic'
 
         # steps for pose
         self._step = 0.1
@@ -33,18 +33,20 @@ class AStar(object):
         goal = node.Node(goal)
         start._cost = 0
         self._fringe.put(start)
-
-        self.get_neighbours(start._loc)
+        print self.eucledian(start._loc,goal._loc)
+        #print self.get_neighbours(start._loc)
 
     def get_neighbours(self, loc):
+        """
+            Takes in a location as a numpy array
+            returns the neighbours to that location
+        """
         locations = []
-        print loc
 
         if self._connected == 4:
-
+            dir = 1
             for i in xrange(6):
-                locations = []
-                dir = 1
+
                 if i%2 == 0: dir = -1
 
                 step = dir*self._step
@@ -67,3 +69,22 @@ class AStar(object):
 
 
         return locations
+
+    def valid_location(self, loc):
+        """
+            checks if a location is valid
+        """
+        self._robot.SetActiveDOFValues(loc)
+        return self._env.CheckCollision(self._robot)
+
+    def manhattan(self, loc1, loc2):
+        """
+            calculates the manhattan distance between two locations
+        """
+        return np.sum(np.absolute( loc1 - loc2))
+
+    def eucledian(self,loc1, loc2):
+        """
+            calculates the eucledian distance between two locations
+        """
+        return  math.sqrt( np.sum( np.square(loc1-loc2) ))
