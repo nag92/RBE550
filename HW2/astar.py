@@ -14,7 +14,7 @@ class AStar(object):
         self._robot = robot
 
         # which cells to check
-        self._connected = 4#connected
+        self._connected = 8#connected
 
         # how to calculate heuristics
         if (heuristic is 'eucledian' or heuristic is 'manhattan'):
@@ -33,8 +33,8 @@ class AStar(object):
         goal = node.Node(goal)
         start._cost = 0
         self._fringe.put(start)
-        print self.eucledian(start._loc,goal._loc)
-        #print self.get_neighbours(start._loc)
+        with self._env:
+            print self.get_neighbours(start._loc)
 
     def get_neighbours(self, loc):
         """
@@ -47,17 +47,14 @@ class AStar(object):
             dir = 1
             for i in xrange(6):
 
-                if i%2 == 0: dir = -1
+                if i % 2 == 0: dir = -1
 
                 step = dir*self._step
                 angle_inc = dir*self._angle_step
 
-                if i == 0 or i == 1 :
-                    locations.append(loc + np.array([step, 0, 0]))
-                elif i == 2 or i == 3 :
-                    locations.append(loc + np.array([0, step, 0]))
-                elif( i == 4 or i == 5):
-                    locations.append(loc + np.array([0 , 0, angle_inc]))
+                if   i == 0 or i == 1 : locations.append(loc + np.array([step, 0, 0]))
+                elif i == 2 or i == 3 : locations.append(loc + np.array([0, step, 0]))
+                elif i == 4 or i == 5 : locations.append(loc + np.array([0 , 0, angle_inc]))
 
         else:
 
@@ -68,7 +65,7 @@ class AStar(object):
                             locations.append( loc + np.array([x,y,z]) )
 
 
-        return locations
+        return filter(self.valid_location,locations)
 
     def valid_location(self, loc):
         """
