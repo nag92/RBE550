@@ -82,7 +82,9 @@ class AStar(object):
             return  math.sqrt( np.sum( np.square(loc1-loc2) ))
 
     def run(self, start, goal):
-
+        """
+        run astar
+        """
         start = node.Node(start)
         goal = node.Node(goal)
         start._cost = 0

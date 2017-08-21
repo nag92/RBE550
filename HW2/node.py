@@ -20,5 +20,7 @@ class Node(object):
 
 
     def __eq__(self, other):
-
-        return set(other) == set(self._loc)
+        """
+        check if equal
+        """
+        return set(other._loc) == set(self._loc)
