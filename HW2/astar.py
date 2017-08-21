@@ -7,20 +7,23 @@ import node
 class AStar(object):
     """docstring for astar."""
 
-    def __init__(self, env, robot, start, goal, connected=8, heuristic='eucledian'):
+    def __init__(self, env, robot, start, goal, connected=8, heuristic="eucledian"):
 
         # Set the variables
         self._env = env
         self._robot = robot
 
         # which cells to check
-        self._connected = 8#connected
+        if not (connected == 8 or connected == 4):
+            self._connected = 8
+        else:
+            self._connected = connected
 
         # how to calculate heuristics
-        if (heuristic is 'eucledian' or heuristic is 'manhattan'):
-            self._heuristic = 'eucledian'
+        if not (heuristic is "eucledian" or heuristic is "manhattan"):
+            self._heuristic = "eucledian"
         else:
-            self._heuristic = 'heuristic'
+            self._heuristic = heuristic
 
         # steps for pose
         self._step = 0.1
@@ -74,14 +77,13 @@ class AStar(object):
         self._robot.SetActiveDOFValues(loc)
         return self._env.CheckCollision(self._robot)
 
-    def manhattan(self, loc1, loc2):
+    def heuristic(self, loc1, loc2):
+        """"
+        calculates the heuristic cost fot two points
         """
-            calculates the manhattan distance between two locations
-        """
-        return np.sum(np.absolute( loc1 - loc2))
+        if self._heuristic is "manhattan":
+            return np.sum(np.absolute( loc1 - loc2))
+        elif self._heuristic is "eucledian":
+            return  math.sqrt( np.sum( np.square(loc1-loc2) ))
 
-    def eucledian(self,loc1, loc2):
-        """
-            calculates the eucledian distance between two locations
-        """
-        return  math.sqrt( np.sum( np.square(loc1-loc2) ))
+    def run(self):
