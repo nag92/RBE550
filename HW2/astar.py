@@ -7,7 +7,7 @@ import node
 class AStar(object):
     """docstring for astar."""
 
-    def __init__(self, env, robot, start, goal, connected=8, heuristic="eucledian"):
+    def __init__(self, env, robot, connected=8, heuristic="eucledian"):
 
         # Set the variables
         self._env = env
@@ -32,12 +32,7 @@ class AStar(object):
         # set up the Queue
         self._fringe = Queue.PriorityQueue()
         self._close_set = []
-        start = node.Node(start)
-        goal = node.Node(goal)
-        start._cost = 0
-        self._fringe.put(start)
-        with self._env:
-            print self.get_neighbours(start._loc)
+
 
     def get_neighbours(self, loc):
         """
@@ -86,6 +81,13 @@ class AStar(object):
         elif self._heuristic is "eucledian":
             return  math.sqrt( np.sum( np.square(loc1-loc2) ))
 
-    def run(self):
+    def run(self, start, goal):
+
+        start = node.Node(start)
+        goal = node.Node(goal)
+        start._cost = 0
+        self._fringe.put(start)
+
+
 
         found = False
