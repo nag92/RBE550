@@ -87,3 +87,5 @@ class AStar(object):
             return  math.sqrt( np.sum( np.square(loc1-loc2) ))
 
     def run(self):
+
+        found = False
