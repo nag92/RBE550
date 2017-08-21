@@ -17,3 +17,8 @@ class Node(object):
 
     def __cmp__(self, other):
         return cmp(self._cost, other.priority)
+
+
+    def __eq__(self, other):
+
+        return set(other) == set(self._loc)
