@@ -1,4 +1,4 @@
-import Queue
+import priorityqueue
 import math
 import numpy as np
 import node
@@ -30,7 +30,7 @@ class AStar(object):
         self._angle_step = 0.25*math.pi
 
         # set up the Queue
-        self._fringe = Queue.PriorityQueue()
+        self._fringe = priorityqueue.PriorityQueue()
         self._close_set = []
 
 
@@ -86,9 +86,27 @@ class AStar(object):
         run astar
         """
         start = node.Node(start)
-        goal = node.Node(goal)
+        goal  = node.Node(goal)
         start._cost = 0
-        self._fringe.put(start)
+        self._fringe.put(start,start._cost)
+
+        while not self._fringe.empty() and not found:
+
+            current = self._fringe.get()
+            self._close_set.append(current)
+
+            if current == self._goal:
+                print "FOUND"
+                break
+
+
+
+
+
+
+
+            pass
+
 
 
 
