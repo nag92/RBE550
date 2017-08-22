@@ -34,13 +34,13 @@ class AStar(object):
         self._close_set = []
 
 
-    def get_neighbours(self, loc):
+    def get_neighbours(self, node):
         """
             Takes in a location as a numpy array
             returns the neighbours to that location
         """
         locations = []
-
+        loc = node._loc
         if self._connected == 4:
             dir = 1
             for i in xrange(6):
@@ -151,5 +151,6 @@ class AStar(object):
                     self._fringe.put(temp_node,temp_node.getCost())
 
         path = self.makePath(start, self._close_set[-1])
+        print path
 
             

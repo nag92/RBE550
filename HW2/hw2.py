@@ -55,7 +55,9 @@ if __name__ == "__main__":
 
         #### Implement the A* algorithm to compute a path for the robot's base starting from the current configuration of the robot and ending at goalconfig. The robot's base DOF have already been set as active. It may be easier to implement this as a function in a separate file and call it here.
         goal = np.array([goalconfig[0], goalconfig[1], goalconfig[2]])
-
+        start = robot.GetActiveDOFValues()
+        astar = astar.AStar(env,robot)
+        astar.run(start,goal)
 
         #### Draw your path in the openrave here (see /usr/lib/python2.7/dist-packages/openravepy/_openravepy_0_8/examples/tutorial_plotting.py for examples)
 
