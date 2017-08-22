@@ -81,17 +81,36 @@ class AStar(object):
         elif self._heuristic is "eucledian":
             return  self.eucledian(loc1,loc2)
 
-
     def travelCost(self,loc1,loc2):
+        """
+            find the travel cost between points
+        """
         return self.eucledian(loc1,loc2)
         pass
 
 
     def manhattan(self, loc1, loc2):
+        """
+            returns the manhattan cost between points
+        """
         return np.sum(np.absolute( loc1 - loc2))
 
     def eucledian(self, loc1, loc2):
+        """
+            return the eucledian cost between points
+        """
         return math.sqrt(np.sum(np.square(loc1 - loc2)))
+
+    def makePath(self, start, goal):
+        """
+            takes in a list and returns a path from start to finish
+        """
+        current = goal
+        path = [goal._loc]
+        while current is not start:
+            current = current._parent
+            path.append(current._loc)
+        return list(reversed(path))
 
 
     def run(self, start, goal):
@@ -128,8 +147,9 @@ class AStar(object):
                     temp_node = node.Node(next)
                     temp_node._parent = current
                     temp_node._g_cost = new_cost
-                    temp_node._heuristic = self.heuristic(next,goal_node._loc)
+                    temp_node._h_cost = self.heuristic(next,goal_node._loc)
                     self._fringe.put(temp_node,temp_node.getCost())
-                    pass
+
+        path = self.makePath(start, self._close_set[-1])
 
             
