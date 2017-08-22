@@ -74,40 +74,62 @@ class AStar(object):
 
     def heuristic(self, loc1, loc2):
         """"
-        calculates the heuristic cost fot two points
+            calculates the heuristic cost fot two points
         """
         if self._heuristic is "manhattan":
-            return np.sum(np.absolute( loc1 - loc2))
+            return self.manhattan(loc1,loc2)
         elif self._heuristic is "eucledian":
-            return  math.sqrt( np.sum( np.square(loc1-loc2) ))
+            return  self.eucledian(loc1,loc2)
+
+
+    def travelCost(self,loc1,loc2):
+        return self.eucledian(loc1,loc2)
+        pass
+
+
+    def manhattan(self, loc1, loc2):
+        return np.sum(np.absolute( loc1 - loc2))
+
+    def eucledian(self, loc1, loc2):
+        return math.sqrt(np.sum(np.square(loc1 - loc2)))
+
 
     def run(self, start, goal):
         """
         run astar
         """
-        start = node.Node(start)
-        goal  = node.Node(goal)
-        start._cost = 0
-        self._fringe.put(start,start._cost)
+        start_node = node.Node(start)
+        goal_node  = node.Node(goal)
+        start_node._g_cost = 0
 
-        while not self._fringe.empty() and not found:
+        self._fringe.put(start_node,start_node.getCost())
+
+        while not self._fringe.empty():
 
             current = self._fringe.get()
+
             self._close_set.append(current)
 
-            if current == self._goal:
-                print "FOUND"
+            if current == goal_node:
+                print "FOUND" 
                 break
 
+            for next in self.get_neighbours(current):
+                new_cost = current._g_cost +  self.travelCost(current,next)
+                old = self._fringe.get_item(current)
+                if old is not None:
+                    if old[1]._g_cost > new_cost:
+                        self._fringe.remove(old)
+                        self._close_set.remove(old[1])
+                        old[1]._g_cost = new_cost
+                        old[1]._parent = current
+                        self._fringe.put(old[1], old[1].getCost()) 
+                else:
+                    temp_node = node.Node(next)
+                    temp_node._parent = current
+                    temp_node._g_cost = new_cost
+                    temp_node._heuristic = self.heuristic(next,goal_node._loc)
+                    self._fringe.put(temp_node,temp_node.getCost())
+                    pass
 
-
-
-
-
-
-            pass
-
-
-
-
-        found = False
+            
