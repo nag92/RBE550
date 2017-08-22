@@ -7,8 +7,6 @@ class Node(object):
     def __init__(self, loc=None):
         self._loc = loc
 
-        self._cost = 0.0
-
         self._h_cost = 0.0
 
         self._g_cost = 0.0
@@ -18,6 +16,9 @@ class Node(object):
         self._generation = 0.0
 
         self._distance = 0.0
+
+    def getCost(self):
+        return self._g_cost + self._h_cost
 
     def __cmp__(self, other):
         return cmp(self._cost, other.priority)
