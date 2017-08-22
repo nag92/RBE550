@@ -9,11 +9,15 @@ class Node(object):
 
         self._cost = 0.0
 
+        self._h_cost = 0.0
+
+        self._g_cost = 0.0
+
         self._parent = None
 
-        self._generation = 0
+        self._generation = 0.0
 
-        self._distance = 0
+        self._distance = 0.0
 
     def __cmp__(self, other):
         return cmp(self._cost, other.priority)
